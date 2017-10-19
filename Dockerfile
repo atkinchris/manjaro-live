@@ -1,8 +1,14 @@
 FROM jonathonf/manjaro:latest
 
-RUN pacman -Syy --noconfirm manjaro-tools
+RUN pacman -Syu --noconfirm --noprogressbar \
+    base-devel \
+    manjaro-tools \
+    && pacman -Scc --noconfirm --noprogressbar
 
-WORKDIR /tmp
+# RUN /usr/bin/useradd -m builder && \
+#     echo 'builder ALL=(root) NOPASSWD:/usr/bin/pacman' > /etc/sudoers.d/makepkg
 
-ENTRYPOINT [ "buildiso" ]
-CMD [ "-p", "gnome" ]
+VOLUME ['/output']
+
+ENTRYPOINT ["buildiso"]
+CMD ["-p", "xfce"]
